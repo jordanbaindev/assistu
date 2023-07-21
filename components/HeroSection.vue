@@ -35,9 +35,9 @@
                 </div>
               </div>
               <div class="md:absolute md:flex md:items-center md:justify-end md:inset-y-0 md:right-0">
-                <span class="inline-flex rounded-md shadow">
+                <!-- <span class="inline-flex rounded-md shadow">
                   <a href="https://assistyou.online/worksuite/login" class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50"> Log in </a>
-                </span>
+                </span> -->
               </div>
             </nav>
           </div>

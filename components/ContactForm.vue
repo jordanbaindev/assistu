@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-amber-50 py-20">
+  <div id="contact-form" class="bg-amber-50 py-20">
     <!-- Header -->
-      <div class="py-16 lg:py-32">
+      <div class="py-16 lg:py-28">
         <div class="relative z-10 mx-auto max-w-7xl pl-4 pr-8 sm:px-6 lg:px-8">
           <h1 class="text-4xl font-bold tracking-tight text-warm-gray-900 sm:text-5xl lg:text-6xl">Get in touch</h1>
           <p class="mt-6 max-w-3xl text-xl text-gray-600">We offer a variety of services to help you with your business
@@ -194,7 +194,7 @@ import { MailIcon, PhoneIcon } from '@heroicons/vue/outline/index.js'
 // };
 
 function submit() {
-  emailjs.send('service_bqkc5il','template_uu3m3qe', $this.$refs.form, 'DrjNuyJrCutWH4W34')
+  emailjs.sendForm('service_bqkc5il','template_uu3m3qe', $this.$refs.form, 'DrjNuyJrCutWH4W34')
     .then((response) => {
       console.log('SUCCESS!', response.status, response.text);
     }, (err) => {

@@ -17,11 +17,11 @@
             <Meta property="og:title" content="Virtual Assistant Services - AssistU"></Meta>
             <Meta property="og:description" content="Let us prove how much time and money a virtual assistant can save you."></Meta>
             <Meta property="og:type" content="website"></Meta>
-            <Meta property="og:image" content="/social_card.webp"></Meta>
+            <Meta property="og:image" :content="SocialCard"></Meta>
 
             <Link rel="stylesheet" href="https://rsms.me/inter/inter.css"></Link>
 
-            <Link rel="icon" type="image/x-icon" href="/favicon.ico"></Link>
+            <Link rel="icon" type="image/x-icon" :href="Icon"></Link>
         </Head>
 
         <slot/>
@@ -43,6 +43,8 @@
 
 <script setup>
 import { defineComponent, h } from 'vue'
+import SocialCard from '@/assets/img/social_card.jpg'
+import Icon from '@/assets/img/icon.png'
 
 const navigation = [
 {
