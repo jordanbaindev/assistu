@@ -49,7 +49,7 @@ import Icon from '@/assets/img/icon.png'
 const navigation = [
 {
     name: 'Facebook',
-    href: '#',
+    href: 'https://www.facebook.com/profile.php?id=100087050152606&mibextid=ZbWKwL',
     icon: defineComponent({
     render: () =>
         h('svg', { fill: 'currentColor', viewBox: '0 0 24 24' }, [
@@ -63,7 +63,7 @@ const navigation = [
 },
 {
     name: 'Instagram',
-    href: '#',
+    href: 'https://www.instagram.com/assistu.tt/?igshid=YmM0MjE2YWMzOA==',
     icon: defineComponent({
     render: () =>
         h('svg', { fill: 'currentColor', viewBox: '0 0 24 24' }, [
