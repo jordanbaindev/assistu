@@ -90,7 +90,7 @@
                   </a>
                 </li>
                 <li>
-                  <a class="text-indigo-200 hover:text-indigo-100" href="`https://www.instagram.com/assistu.tt/?igshid=YmM0MjE2YWMzOA==`" target="_blank">
+                  <a class="text-indigo-200 hover:text-indigo-100" href="https://www.instagram.com/assistu.tt/?igshid=YmM0MjE2YWMzOA==`" target="_blank">
                     <span class="sr-only">Instagram</span>
                     <svg class="h-7 w-7" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
                       <path
