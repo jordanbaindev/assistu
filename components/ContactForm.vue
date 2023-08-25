@@ -104,26 +104,29 @@
             <!-- Contact form -->
             <div class="py-10 px-6 sm:px-10 lg:col-span-2 xl:p-12">
               <h3 class="text-lg font-medium text-warm-gray-900">Send us a message</h3>
-              <form ref="form" @submit.prevent="submit()" class="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
+              <Form v-slot="{ errors }" @submit="OnSubmit" class="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
                 <div>
                   <label for="first-name" class="block text-sm font-medium text-warm-gray-900">First name</label>
                   <div class="mt-1">
-                    <input type="text" name="first-name" id="first-name" autocomplete="given-name"
+                    <Field :rules="required" type="text" name="f_name" id="first-name" autocomplete="given-name"
                       class="block w-full rounded-md border-warm-gray-300 py-3 px-4 text-warm-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                      <span class="text-red-500 text-sm">{{ errors.f_name }}</span>
                   </div>
                 </div>
                 <div>
                   <label for="last-name" class="block text-sm font-medium text-warm-gray-900">Last name</label>
                   <div class="mt-1">
-                    <input type="text" name="last-name" id="last-name" autocomplete="family-name"
+                    <Field :rules="required" type="text" name="l_name" id="last-name" autocomplete="family-name"
                       class="block w-full rounded-md border-warm-gray-300 py-3 px-4 text-warm-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                      <span class="text-red-500 text-sm">{{ errors.l_name }}</span>
                   </div>
                 </div>
                 <div>
                   <label for="email" class="block text-sm font-medium text-warm-gray-900">Email</label>
                   <div class="mt-1">
-                    <input id="email" name="email" type="email" autocomplete="email"
+                    <Field :rules="required" id="email" name="email" type="email" autocomplete="email"
                       class="block w-full rounded-md border-warm-gray-300 py-3 px-4 text-warm-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                      <span class="text-red-500 text-sm">{{ errors.email }}</span>
                   </div>
                 </div>
                 <div>
@@ -131,9 +134,10 @@
                     <label for="phone" class="block text-sm font-medium text-warm-gray-900">Phone</label>
                   </div>
                   <div class="mt-1">
-                    <input type="text" name="phone" id="phone" autocomplete="tel"
+                    <Field :rules="required" type="text" name="phone" id="phone" autocomplete="tel"
                       class="block w-full rounded-md border-warm-gray-300 py-3 px-4 text-warm-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                       aria-describedby="phone-optional" />
+                      <span class="text-red-500 text-sm">{{ errors.phone }}</span>
                   </div>
                 </div>
                 <div class="sm:col-span-2">
@@ -142,28 +146,126 @@
                     <span id="message-max" class="text-sm text-warm-gray-500">Max. 500 characters</span>
                   </div>
                   <div class="mt-1">
-                    <textarea id="message" name="message" rows="4"
+                    <Field as="textarea" :rules="required" id="message" name="message" rows="4"
                       class="block w-full rounded-md border-warm-gray-300 py-3 px-4 text-warm-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                       aria-describedby="message-max" />
+                      <span class="text-red-500 text-sm">{{ errors.message }}</span>
                   </div>
                 </div>
                 <div class="sm:col-span-2 sm:flex sm:justify-end">
-                  <button type="submit"
-                    class="mt-2 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">Submit</button>
+                  <button type="submit" :disabled="isLoading"
+                    class="mt-2 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
+                    <svg v-if="isLoading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Submit
+                  </button>
                 </div>
-              </form>
+              </Form>
             </div>
           </div>
         </div>
       </div>
     </section>
   </div>
+
+
+
+  <TransitionRoot as="template" :show="successful">
+    <Dialog as="div" class="relative z-10" @close="successful = false">
+      <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+      </TransitionChild>
+
+      <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+            <DialogPanel class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+              <div>
+                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+                  <CheckIcon class="h-6 w-6 text-green-600" aria-hidden="true" />
+                </div>
+                <div class="mt-3 text-center sm:mt-5">
+                  <DialogTitle as="h3" class="text-lg font-medium leading-6 text-gray-900">Message sent</DialogTitle>
+                  <div class="mt-2">
+                    <p class="text-sm text-gray-500">Thank you for contacting us. We'll get back to you shortly.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-5 sm:mt-6">
+                <button type="button" class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm" @click="successful = false">Close</button>
+              </div>
+            </DialogPanel>
+          </TransitionChild>
+        </div>
+      </div>
+    </Dialog>
+  </TransitionRoot>
+
+
+
+  <TransitionRoot as="template" :show="failed">
+    <Dialog as="div" class="relative z-10" @close="failed = false">
+      <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+      </TransitionChild>
+
+      <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+            <DialogPanel class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+              <div class="sm:flex sm:items-start">
+                <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <ExclamationTriangleIcon class="h-6 w-6 text-red-600" aria-hidden="true" />
+                </div>
+                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                  <DialogTitle as="h3" class="text-lg font-medium leading-6 text-gray-900">Oops, something went wrong!</DialogTitle>
+                  <div class="mt-2">
+                    <p class="text-sm text-gray-500">Looks like we encountered an error. We're sorry for the inconvenience!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-5 sm:mt-4 sm:ml-10 sm:flex sm:pl-4">
+                <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" @click="failed = false" ref="cancelButtonRef">Close</button>
+              </div>
+            </DialogPanel>
+          </TransitionChild>
+        </div>
+      </div>
+    </Dialog>
+  </TransitionRoot>
+
+
+
 </template>
   
 <script setup>
 import emailjs from '@emailjs/browser';
+import { MailIcon, PhoneIcon, CheckIcon } from '@heroicons/vue/outline/index.js'
+import { Field, Form } from 'vee-validate';
+import { ref } from 'vue'
+import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 
-import { MailIcon, PhoneIcon } from '@heroicons/vue/outline/index.js'
+const successful = ref(false);
+const failed = ref(false);
+const isLoading = ref(false);
+
+function required(value) {
+  return value ? true : 'This field is required';
+}
+
+function OnSubmit(values) {
+  isLoading.value = true
+  emailjs.send('service_nl955p3','template_uu3m3qe', values, 'DrjNuyJrCutWH4W34')
+    .then((response) => {
+      successful.value = true;
+      isLoading.value = false;
+    }, (err) => {
+      failed.value = true
+      isLoading.value = false;
+    });
+}
 
 // const plans = {
 //   Basic: [
@@ -182,14 +284,4 @@ import { MailIcon, PhoneIcon } from '@heroicons/vue/outline/index.js'
 //     'Elite: $5199 - 12 months',
 //   ],
 // };
-
-function submit() {
-  emailjs.sendForm('service_bqkc5il','template_uu3m3qe', $this.$refs.form, 'DrjNuyJrCutWH4W34')
-    .then((response) => {
-      console.log('SUCCESS!', response.status, response.text);
-    }, (err) => {
-      console.log('FAILED...', err);
-    });
-}
-
 </script>

@@ -19,6 +19,7 @@
   "dependencies": {
     "@emailjs/browser": "^3.11.0",
     "@headlessui/vue": "^1.7.0",
-    "@heroicons/vue": "^1.0.6"
+    "@heroicons/vue": "^1.0.6",
+    "@vee-validate/nuxt": "^4.11.3"
   }
 }

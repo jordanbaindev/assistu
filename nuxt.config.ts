@@ -8,5 +8,8 @@ export default defineNuxtConfig({
       postcssOptions: require('./postcss.config.js'),
     },
     transpile: ['@headlessui/vue']
-  }
+  },
+  modules: [
+    '@vee-validate/nuxt',
+  ],
 })
