@@ -11,7 +11,7 @@
             <Meta name="twitter:title" content="Virtual Assistant Services - AssistU"></Meta>
             <Meta name="twitter:site" content="https://assistyou.online"></Meta>
             <Meta name="twitter:description" content="Let us prove how much time and money a virtual assistant can save you."></Meta>
-            <Meta name="twitter:card" content="summary_large_image"></Meta>
+            <Meta name="twitter:card" :content="SocialCard"></Meta>
 
             <Meta property="og:url" content="https://assistyou.online"></Meta>
             <Meta property="og:title" content="Virtual Assistant Services - AssistU"></Meta>
